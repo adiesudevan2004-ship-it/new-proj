@@ -1,15 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Submit to Airtable</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Airtable Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    button {
+      background: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
-  <h2>Send to Airtable</h2>
-  <form id="dataForm">
-    <input type="text" name="name" placeholder="Name" required><br>
-    <input type="email" name="email" placeholder="Email" required><br>
-    <button type="submit">Send</button>
-  </form>
+  <div class="container">
+    <h2>Send to Airtable</h2>
+    <form id="dataForm">
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <button type="submit">Send</button>
+    </form>
+    <div class="message" id="message"></div>
+  </div>
 
   <script>
     document.getElementById("dataForm").addEventListener("submit", async function (e) {
@@ -20,14 +72,19 @@
         email: formData.get("email")
       };
 
-      const res = await fetch("/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-
-      const result = await res.json();
-      alert(JSON.stringify(result));
+      try {
+        const res = await fetch("/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        const result = await res.json();
+        document.getElementById("message").textContent = result.success 
+          ? "✅ Data sent successfully!" 
+          : "❌ Failed to send data.";
+      } catch (err) {
+        document.getElementById("message").textContent = "❌ Error sending data.";
+      }
     });
   </script>
 </body>
