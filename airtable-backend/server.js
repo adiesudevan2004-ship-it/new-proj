@@ -5,13 +5,14 @@ const Airtable = require('airtable');
 const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; 
 
-// Setup middleware
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static('public')); 
 
-// Airtable config
+// Airtable configuration
 Airtable.configure({
     endpointUrl: 'https://api.airtable.com',
     apiKey: process.env.AIRTABLE_API_KEY,
@@ -43,5 +44,5 @@ app.post('/submit', async (req, res) => {
 
 // Start server
 app.listen(port, () => {
-    console.log(Server running on http://localhost:${port});
+    console.log(`Server running on http://localhost:${port}`);
 });
