@@ -1,1 +1,11 @@
-npm install express airtable dotenv body-parser cors
+{
+  "name": "airtable-vercel-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "airtable": "^0.11.1",
+    "dotenv": "^16.0.0"
+  }
+}
